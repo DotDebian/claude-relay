@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark-dimmed.min.css">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="layout">
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <span class="sidebar-title">Sessions</span>
+      <button id="new-session-btn" title="New session"><i data-lucide="plus"></i></button>
+    </div>
+    <div id="session-list"></div>
+  </div>
+  <div id="sidebar-overlay"></div>
+  <div id="app">
+    <div id="header">
+      <div id="header-left">
+        <button id="hamburger-btn" aria-label="Toggle sidebar"><i data-lucide="menu"></i></button>
+        <span class="project-name" id="project-name">Connecting...</span>
+      </div>
+      <div class="status">
+        <span id="status-text">Disconnected</span>
+        <span class="status-dot" id="status-dot"></span>
+      </div>
+    </div>
+
+    <div id="messages"></div>
+
+    <div id="input-area">
+      <div id="image-preview-bar"></div>
+      <div id="input-row" style="position:relative">
+        <div id="slash-menu"></div>
+        <textarea id="input" rows="1" placeholder="Message Claude..." enterkeyhint="send"></textarea>
+        <button id="send-btn" disabled aria-label="Send"><i data-lucide="arrow-up"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@14/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -60,27 +60,62 @@ function getLocalIP() {
   return "localhost";
 }
 
-const server = createServer(cwd);
+function confirm(callback) {
+  const readline = require("readline");
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-server.on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.error(`\n  Port ${port} is already in use.`);
-    console.error(`  Run with a different port: claude-relay -p <port>`);
-    console.error(`  Or kill the existing process: lsof -ti :${port} | xargs kill\n`);
-  } else {
-    console.error(`\n  Server error: ${err.message}\n`);
-  }
-  process.exit(1);
-});
+  console.log("");
+  console.log("  \x1b[1;33m⚠  WARNING — READ BEFORE CONTINUING\x1b[0m");
+  console.log("");
+  console.log("  claude-relay has \x1b[1mno built-in authentication or encryption.\x1b[0m");
+  console.log("  Anyone with access to the URL gets \x1b[1mfull Claude Code access\x1b[0m to");
+  console.log("  this machine — reading, writing, and executing files with your");
+  console.log("  user permissions.");
+  console.log("");
+  console.log("  We strongly recommend using a private network layer such as");
+  console.log("  Tailscale, WireGuard, or a VPN.");
+  console.log("");
+  console.log("  If you choose to expose it beyond your private network, that's");
+  console.log("  your call. \x1b[1mEntirely at your own risk.\x1b[0m The authors assume no");
+  console.log("  responsibility for any damage, data loss, or security incidents.");
+  console.log("");
 
-server.listen(port, () => {
-  const ip = getLocalIP();
-  const project = require("path").basename(cwd);
-  console.log("");
-  console.log(`  Claude Relay running at http://${ip}:${port}`);
-  console.log(`  Project: ${project}`);
-  console.log(`  Directory: ${cwd}`);
-  console.log("");
-  console.log("  Open the URL on your phone to start chatting.");
-  console.log("");
-});
+  rl.question("  Do you understand and accept? (type \x1b[1my\x1b[0m to continue): ", (answer) => {
+    rl.close();
+    if (/^(y|yes)$/i.test(answer.trim())) {
+      callback();
+    } else {
+      console.log("\n  Aborted.\n");
+      process.exit(0);
+    }
+  });
+}
+
+function start() {
+  const server = createServer(cwd);
+
+  server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`\n  Port ${port} is already in use.`);
+      console.error(`  Run with a different port: claude-relay -p <port>`);
+      console.error(`  Or kill the existing process: lsof -ti :${port} | xargs kill\n`);
+    } else {
+      console.error(`\n  Server error: ${err.message}\n`);
+    }
+    process.exit(1);
+  });
+
+  server.listen(port, () => {
+    const ip = getLocalIP();
+    const project = require("path").basename(cwd);
+    console.log("");
+    console.log(`  Claude Relay running at http://${ip}:${port}`);
+    console.log(`  Project: ${project}`);
+    console.log(`  Directory: ${cwd}`);
+    console.log("");
+    console.log("  Open the URL on your phone to start chatting.");
+    console.log("");
+  });
+}
+
+confirm(start);
